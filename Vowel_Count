@@ -1,0 +1,36 @@
+import java.util.Scanner;
+
+public class Main 
+{
+    public static void main(String[] args) 
+    {
+        Scanner in = new Scanner(System.in);
+        System.out.println("Enter the string: ");
+        String str = in.nextLine();
+        int a=0,i=0,e=0,o=0,u=0;
+        str=str.toLowerCase();
+        for(int j=0;j<str.length();j++){
+            if(str.charAt(j)=='a'){
+                a++;
+            }
+            else if(str.charAt(j)=='e'){
+                e++;
+            }
+           else if(str.charAt(j)=='i'){
+                i++;
+            }
+           else if(str.charAt(j)=='o'){
+                o++;
+            }
+            else if(str.charAt(j)=='u'){
+                u++;
+            }
+        }
+        System.out.println("a:"+a);
+        System.out.println("e:"+e);
+        System.out.println("i:"+i);
+        System.out.println("o:"+o);
+        System.out.println("u:"+u);
+
+    } 
+}
