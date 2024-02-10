@@ -9,15 +9,30 @@ public class Main
         String str1 = in.nextLine();
         System.out.println("Enter the string: ");
         String str2 = in.nextLine();
+        String mismatch1="",mismatch2="";
         if(str1.length() != str2.length()){
             System.out.println("Length not matched");
         }
         
         for(int i=0;i<=str1.length()-1;i++){
             if((str1.charAt(i)!=str2.charAt(i))){
-                System.out.print(str1.charAt(i)+",");
-                System.out.println(str2.charAt(i));
+                mismatch1=mismatch1+(str1.charAt(i));
+                mismatch2=mismatch2+(str2.charAt(i));
             }
+            else{
+                 if (!mismatch1.isEmpty()) {
+                System.out.print(mismatch1+",");
+                System.out.println(mismatch2);
+                mismatch1="";
+                mismatch2="";
+            }
+            }
+            
+        }
+         if (!mismatch1.isEmpty()) {
+            System.out.println( mismatch1 + ", " + mismatch2);
+        } else {
+            System.out.println("No mismatched characters found.");
         }
     } 
 }
