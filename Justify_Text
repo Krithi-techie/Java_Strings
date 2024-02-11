@@ -1,0 +1,231 @@
+import java.util.ArrayList;
+
+public class TextJustification {
+
+	// Function to join the words
+	// with spaces spread evenly
+	static String joinALineWithSpace(
+			ArrayList<String> words,
+			int start, int end,
+			int num_spaces) {
+
+		// Number of words in current line
+		int num_words_curr_line
+				= end - start + 1;
+
+		// String to store the justified text
+		StringBuilder line = new StringBuilder();
+
+		for (int i = start; i < end; i++) {
+
+			line.append(words.get(i));
+			--num_words_curr_line;
+
+			// Count number of current space needed
+			int num_curr_space
+					= (int) Math.ceil((double) (num_spaces)
+					/ num_words_curr_line);
+
+			// Insert spaces in string line
+			for (int j = 0; j < num_curr_space; j++) {
+				line.append(' ');
+			}
+
+			// Delete the spaces inserted in line
+			num_spaces -= num_curr_space;
+		}
+
+		// Insert word to string line
+		line.append(words.get(end));
+		for (int i = 0; i < num_spaces; i++) {
+			line.append(' ');
+		}
+
+		// Return justified text
+		return line.toString();
+	}
+
+	// Function that justifies the words of
+	// sentence of length of line L
+	static ArrayList<String> justifyText(
+			ArrayList<String> words,
+			int L) {
+
+		int curr_line_start = 0;
+		int num_words_curr_line = 0;
+		int curr_line_length = 0;
+
+		// To store the justified text
+		ArrayList<String> result = new ArrayList<>();
+
+		// Traversing the words array
+		for (int i = 0; i < words.size(); i++) {
+
+			// currLineStart is the first word
+			// in the current line, and i is
+			// used to identify the last word
+			++num_words_curr_line;
+
+			int lookahead_line_length
+					= curr_line_length
+					+ words.get(i).length()
+					+ (num_words_curr_line - 1);
+
+			// If by including the words length becomes L,
+			// then that set of words is justified
+			// and add the justified text to result
+			if (lookahead_line_length == L) {
+
+				// Justify the set of words
+				String ans
+						= joinALineWithSpace(
+						words,
+						curr_line_start,
+						i,
+						i - curr_line_start);
+
+				// Store the justified text in result
+				result.add(ans);
+
+				// Start the current line
+				// with next index
+				curr_line_start = i + 1;
+
+				// num of words in the current line
+				// and current line length set to 0
+				num_words_curr_line = 0;
+				curr_line_length = 0;
+			}
+
+			// If by including the words such that
+			// length of words becomes greater than L,
+			// then that set is justified with
+			// one less word and add the
+			// justified text to result
+			else if (lookahead_line_length > L) {
+
+				// Justify the set of words
+				String ans
+						= joinALineWithSpace(
+						words,
+						curr_line_start,
+						i - 1,
+						L - curr_line_length);
+
+				// Store the justified text in result
+				result.add(ans);
+
+				// Current line set to current word
+				curr_line_start = i;
+
+				// Number of words set to 1
+				num_words_curr_line = 1;
+
+				// Current line length set
+				// to current word length
+				curr_line_length = words.get(i).length();
+			}
+
+			// If length is less than L then,
+			// add the word to current line length
+			else {
+				curr_line_length
+						+= words.get(i).length();
+			}
+		}
+
+		// Last line is to be left-aligned
+		if (num_words_curr_line > 0) {
+			StringBuilder line
+					= new StringBuilder(joinALineWithSpace(
+					words,
+					curr_line_start,
+					words.size() - 1,
+					num_words_curr_line - 1));
+
+			line.append(
+					" ".repeat(
+							L - curr_line_length
+									- (num_words_curr_line - 1)));
+
+			// Insert the last line
+			// left-aligned to result
+			result.add(line.toString());
+		}
+
+		// Return result
+		return result;
+	}
+
+	// Function to insert words
+	// of sentence
+	static ArrayList<String> splitWords(String str) {
+
+		ArrayList<String> words = new ArrayList<>();
+		StringBuilder a = new StringBuilder();
+
+		for (char c : str.toCharArray()) {
+
+			// Add char to string currentWord
+			// to get the word
+			if (c != ' ') {
+				a.append(c);
+			}
+
+			// If a space occurs
+			// split the words and
+			// add it to vector
+			else {
+				words.add(a.toString());
+				a = new StringBuilder();
+			}
+		}
+
+		// Push_back the last word
+		// of sentence
+		words.add(a.toString());
+
+		// Return the vector of
+		// words extracted from
+		// string
+		return words;
+	}
+
+	// Function to print justified text
+	static void printJustifiedText(ArrayList<String> result) {
+		for (String line : result) {
+			System.out.println(line);
+		}
+	}
+
+	// Function to call the justification
+	static void justifyTheText(String str, int L) {
+
+		ArrayList<String> words;
+
+		// Inserting words from
+		// given string
+		words = splitWords(str);
+
+		// Function call to
+		// justify the text
+		ArrayList<String> result
+				= justifyText(words, L);
+
+		// Print the justified
+		// text
+		printJustifiedText(result);
+	}
+
+	// Driver Code
+	public static void main(String[] args) {
+		String str
+				= "GeeksforGeeks is the best"
+				+ " computer science portal"
+				+ " for geeks.";
+		int L = 16;
+
+		justifyTheText(str, L);
+	}
+}
+// This Code is Contributed by Yash Agarwal(yashagarwal2852002)
